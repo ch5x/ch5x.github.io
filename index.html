@@ -6,37 +6,52 @@
   <title>chax</title>
   <link rel="icon" href="https://avatars.githubusercontent.com/ch5x"> 
   <style>
-    /* === Background + Global === */
     body {
       margin: 0;
       overflow: hidden;
       background: #000;
       color: #fff;
       font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    /* === Welcome Screen === */
+    #welcome {
+      position: fixed;
+      top:0; left:0; width:100%; height:100%;
+      background: #000;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      z-index: 20;
+      cursor: pointer;
+    }
+
+    #welcome h1 {
+      font-size: 40px;
+      margin: 0;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.8; }
+    }
+
+    /* === Main Content === */
+    #main {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       height: 100vh;
-      text-align: center;
-      animation: fadeIn 1.5s ease-in;
     }
 
-    #bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
+    #bg { 
+      position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* === Profile === */
     .profile {
       display: flex;
       flex-direction: column;
@@ -46,21 +61,14 @@
     }
 
     .profile img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
+      width: 120px; height: 120px; border-radius: 50%;
       margin-bottom: 15px;
       border: none;
-      box-shadow: none;
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
     }
 
-    .profile h1 {
-      margin: 0;
-      font-size: 28px;
-      font-weight: 700;
-    }
+    .profile h1 { margin:0; font-size:28px; font-weight:700; }
 
-    /* === Links === */
     .links {
       display: flex;
       flex-direction: column;
@@ -69,7 +77,6 @@
       z-index: 1;
       width: 100%;
       max-width: 320px;
-      animation: fadeIn 2s ease-in;
     }
 
     a {
@@ -86,22 +93,19 @@
       text-align: center;
       font-size: 16px;
       border: 1px solid #333;
-      box-shadow: 0 0 0 rgba(255, 255, 255, 0);
     }
 
     a:hover {
       background: #1a1a1a;
       transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 20px rgba(255,255,255,0.6);
       border-color: #555;
     }
 
-    /* === Music Button (bottom-right) === */
+    /* Music toggle button */
     #music-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(17, 17, 17, 0.8);
+      position: fixed; bottom: 20px; right: 20px;
+      background: rgba(17,17,17,0.8);
       color: #fff;
       border: 1px solid #333;
       border-radius: 10px;
@@ -112,140 +116,108 @@
       transition: all 0.2s ease, opacity 0.3s ease;
       backdrop-filter: blur(6px);
       box-shadow: 0 0 0 rgba(255,255,255,0);
-      opacity: 0; /* hidden by default */
+      opacity: 0;
     }
 
-    #music-toggle:hover {
-      background: rgba(26, 26, 26, 0.9);
-      transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(255,255,255,0.4);
-      border-color: #555;
-    }
+    #music-toggle:hover { background: rgba(26,26,26,0.9); transform: scale(1.05); }
 
-    @media (max-width: 480px) {
-      .profile img {
-        width: 100px;
-        height: 100px;
-      }
-
-      .profile h1 {
-        font-size: 22px;
-      }
-
-      a {
-        font-size: 15px;
-        padding: 10px 16px;
-      }
-
-      #music-toggle {
-        bottom: 15px;
-        right: 15px;
-        font-size: 16px;
-        padding: 8px 14px;
-      }
+    @media (max-width:480px) {
+      .profile img { width: 100px; height: 100px; }
+      .profile h1 { font-size: 22px; }
+      a { font-size:15px; padding:10px 16px; }
+      #music-toggle { bottom:15px; right:15px; font-size:16px; padding:8px 14px; }
+      #welcome h1 { font-size:30px; }
     }
   </style>
 </head>
 <body>
-  <!-- Particle Background -->
-  <canvas id="bg"></canvas>
+
+  <!-- Welcome Screen -->
+  <div id="welcome">
+    <h1>CLICK TO ENTER...</h1>
+  </div>
 
   <!-- Main Content -->
-  <div class="profile">
-    <img src="https://avatars.githubusercontent.com/ch5x" alt="Profile Picture"> 
-    <h1>chax</h1>
+  <div id="main">
+    <canvas id="bg"></canvas>
+
+    <div class="profile">
+      <img src="https://avatars.githubusercontent.com/ch5x" alt="Profile Picture">
+      <h1>chax</h1>
+    </div>
+
+    <div class="links">
+      <a href="https://github.com/ch5x" target="_blank">github</a>
+      <a href="https://instagram.com/chaxfr" target="_blank">instagram</a>
+      <a href="https://namemc.com/profile/chfx.3" target="_blank">namemc</a>
+    </div>
+
+    <audio id="bg-music" loop>
+      <source src="assets/background.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="music-toggle">⏸</button>
   </div>
 
-  <div class="links">
-    <a href="https://github.com/ch5x" target="_blank">github</a> 
-    <a href="https://instagram.com/chaxfr" target="_blank">instagram</a> 
-    <a href="https://namemc.com/profile/chfx.3" target="_blank">namemc</a> 
-  </div>
-
-  <!-- Background Music -->
-  <audio id="bg-music" loop autoplay>
-    <source src="assets/background.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-
-  <!-- Music Toggle Button -->
-  <button id="music-toggle">⏸</button>
-
-  <!-- Particle + Music Script -->
   <script>
-    // === Particle Background ===
+    const welcome = document.getElementById('welcome');
+    const main = document.getElementById('main');
+    const audio = document.getElementById('bg-music');
+    const button = document.getElementById('music-toggle');
+
+    // Particle background setup
     const canvas = document.getElementById("bg");
     const ctx = canvas.getContext("2d");
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
+    function resizeCanvas(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
-
     const particles = Array(70).fill().map(() => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 2,
-      dx: (Math.random() - 0.5) * 0.4,
-      dy: (Math.random() - 0.5) * 0.4
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height,
+      r:Math.random()*2,
+      dx:(Math.random()-0.5)*0.4,
+      dy:(Math.random()-0.5)*0.4
     }));
-
-    function drawParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "white";
-      particles.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-
-        p.x += p.dx;
-        p.y += p.dy;
-
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+    function drawParticles(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle="white";
+      particles.forEach(p=>{
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+        p.x+=p.dx; p.y+=p.dy;
+        if(p.x<0||p.x>canvas.width)p.dx*=-1;
+        if(p.y<0||p.y>canvas.height)p.dy*=-1;
       });
       requestAnimationFrame(drawParticles);
     }
-    drawParticles();
 
-    // === Background Music (Auto play + Fade-in + Toggle) ===
-    const audio = document.getElementById('bg-music');
-    const button = document.getElementById('music-toggle');
-    audio.volume = 0;
-
-    window.addEventListener('load', () => {
-      audio.play().catch(err => console.log("Autoplay blocked:", err));
+    // Click to remove welcome screen and start music
+    welcome.addEventListener('click', () => {
+      welcome.style.display = 'none';
+      main.style.display = 'flex';
+      drawParticles();
+      audio.volume = 0;
+      audio.play().catch(err=>console.log("Autoplay blocked:",err));
+      // Fade in music
       let vol = 0;
-      const fadeIn = setInterval(() => {
-        if (vol < 1) {
-          vol += 0.02;
-          audio.volume = vol;
-        } else clearInterval(fadeIn);
-      }, 200);
+      const fadeIn = setInterval(()=>{
+        if(vol<1){ vol+=0.02; audio.volume=vol; }
+        else clearInterval(fadeIn);
+      },200);
     });
 
-    // Show button when mouse moves near bottom-right
-    document.addEventListener('mousemove', e => {
-      const margin = 100; // hover area
-      if (window.innerWidth - e.clientX < margin && window.innerHeight - e.clientY < margin) {
-        button.style.opacity = 1;
-      } else {
-        button.style.opacity = 0;
-      }
+    // Show button when mouse near bottom-right
+    document.addEventListener('mousemove', e=>{
+      const margin=100;
+      if(window.innerWidth - e.clientX < margin && window.innerHeight - e.clientY < margin) button.style.opacity=1;
+      else button.style.opacity=0;
     });
 
     // Play/pause toggle
-    button.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play();
-        button.textContent = "⏸";
-      } else {
-        audio.pause();
-        button.textContent = "▶";
-      }
+    button.addEventListener('click', ()=>{
+      if(audio.paused){ audio.play(); button.textContent="⏸"; }
+      else{ audio.pause(); button.textContent="▶"; }
     });
   </script>
+
 </body>
 </html>
