@@ -47,6 +47,12 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    #main.visible {
+      opacity: 1;
     }
 
     #bg { 
@@ -65,7 +71,7 @@
       width: 120px; height: 120px; border-radius: 50%;
       margin-bottom: 15px;
       border: none;
-      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+      box-shadow: none;
     }
 
     .profile h1 { margin:0; font-size:28px; font-weight:700; }
@@ -205,12 +211,13 @@
       requestAnimationFrame(drawParticles);
     }
 
-    // Click to fade out welcome screen and start music
+    // Click to fade out welcome screen and fade in main content
     welcome.addEventListener('click', () => {
       welcome.classList.add('hidden');
       setTimeout(() => {
         welcome.style.display = 'none';
         main.style.display = 'flex';
+        setTimeout(()=>{ main.classList.add('visible'); },50); // fade-in main content
         drawParticles();
         audio.volume = 0;
         audio.play().catch(err=>console.log("Autoplay blocked:",err));
@@ -220,7 +227,7 @@
           if(vol<1){ vol+=0.02; audio.volume=vol; }
           else clearInterval(fadeIn);
         },200);
-      }, 1000);
+      }, 1000); // wait for welcome fade-out
     });
 
     // Show button when mouse near bottom-right
