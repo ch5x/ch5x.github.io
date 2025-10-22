@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>chax</title>
+  <title>chax | Links</title>
   <link rel="icon" href="https://avatars.githubusercontent.com/ch5x"> 
   <style>
     /* === Background + Global === */
@@ -28,7 +28,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1; /* keeps it behind everything */
+      z-index: -1;
     }
 
     @keyframes fadeIn {
@@ -50,7 +50,7 @@
       height: 120px;
       border-radius: 50%;
       margin-bottom: 15px;
-      border: none; /* transparent circle */
+      border: none;
       box-shadow: none;
     }
 
@@ -96,24 +96,33 @@
       border-color: #555;
     }
 
-    /* === Music Button === */
+    /* === Music Button (bottom-right corner, circular) === */
     #music-toggle {
-      margin-top: 20px;
-      padding: 8px 16px;
-      font-size: 14px;
-      background: #111;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(17, 17, 17, 0.8);
       color: #fff;
       border: 1px solid #333;
-      border-radius: 6px;
+      border-radius: 50%;
+      padding: 14px;
       cursor: pointer;
+      font-size: 20px;
+      z-index: 10;
       transition: all 0.2s ease;
-      z-index: 1;
+      backdrop-filter: blur(6px);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 rgba(255,255,255,0);
     }
 
     #music-toggle:hover {
-      background: #1a1a1a;
-      transform: scale(1.05);
-      box-shadow: 0 0 10px rgba(255,255,255,0.5);
+      background: rgba(26, 26, 26, 0.9);
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(255,255,255,0.4);
       border-color: #555;
     }
 
@@ -134,8 +143,11 @@
       }
 
       #music-toggle {
-        font-size: 13px;
-        padding: 6px 12px;
+        bottom: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
       }
     }
   </style>
@@ -156,17 +168,18 @@
     <a href="https://namemc.com/profile/chfx.3" target="_blank">namemc</a> 
   </div>
 
-  <!-- Music Button -->
-  <button id="music-toggle">Play Music</button>
-
   <!-- Background Music -->
-  <audio id="bg-music" loop>
+  <audio id="bg-music" loop autoplay>
     <source src="assets/background.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
-  <!-- Particle Effect Script -->
+  <!-- Music Button -->
+  <button id="music-toggle">🎵</button>
+
+  <!-- Particle + Music Script -->
   <script>
+    // === Particle Background ===
     const canvas = document.getElementById("bg");
     const ctx = canvas.getContext("2d");
 
@@ -174,7 +187,6 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
-
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
@@ -204,17 +216,31 @@
     }
     drawParticles();
 
-    // === Music Script ===
+    // === Background Music (Fade-In + Button) ===
     const audio = document.getElementById('bg-music');
     const button = document.getElementById('music-toggle');
+    audio.volume = 0; // start silent
 
+    window.addEventListener('load', () => {
+      audio.play().catch(err => console.log("Autoplay blocked:", err));
+      // Fade in
+      let vol = 0;
+      const fadeIn = setInterval(() => {
+        if (vol < 1) {
+          vol += 0.02;
+          audio.volume = vol;
+        } else clearInterval(fadeIn);
+      }, 200);
+    });
+
+    // Toggle play/pause
     button.addEventListener('click', () => {
       if (audio.paused) {
         audio.play();
-        button.textContent = 'pause';
+        button.textContent = "⏸";
       } else {
         audio.pause();
-        button.textContent = 'resume';
+        button.textContent = "▶";
       }
     });
   </script>
