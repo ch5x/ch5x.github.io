@@ -6,43 +6,114 @@
   <title>chax</title>
   <link rel="icon" href="https://avatars.githubusercontent.com/ch5x">
   <style>
-  <style>
     body {
       font-family: Arial, sans-serif;
-      background: #0d1117;
+      background: #000;
       color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      animation: fadeIn 1.5s ease-in;
+      padding: 20px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+      animation: fadeIn 2s ease-in;
       text-align: center;
-      padding: 50px;
     }
-    img {
+
+    .profile img {
       width: 120px;
+      height: 120px;
       border-radius: 50%;
+      margin-bottom: 15px;
+      border: 3px solid #238636;
+      box-shadow: 0 0 15px rgba(35, 134, 54, 0.6);
     }
-    h1 {
-      margin-top: 15px;
+
+    .profile h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+      word-wrap: break-word;
     }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      animation: fadeIn 2.5s ease-in;
+      width: 100%;
+      max-width: 320px;
+    }
+
     a {
       display: block;
-      margin: 12px auto;
-      padding: 10px 20px;
-      width: 250px;
+      width: 100%;
+      max-width: 280px;
+      padding: 12px 20px;
       text-decoration: none;
       background: #238636;
       color: white;
       border-radius: 8px;
-      transition: 0.2s;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 0 rgba(35, 134, 54, 0);
+      font-weight: 600;
+      text-align: center;
+      font-size: 16px;
     }
+
     a:hover {
       background: #2ea043;
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(35, 134, 54, 0.8);
+    }
+
+    /* 📱 Responsive tweaks for small screens */
+    @media (max-width: 480px) {
+      body {
+        padding: 30px 15px;
+      }
+
+      .profile img {
+        width: 100px;
+        height: 100px;
+      }
+
+      .profile h1 {
+        font-size: 22px;
+      }
+
+      a {
+        font-size: 15px;
+        padding: 10px 16px;
+      }
     }
   </style>
 </head>
 <body>
-  <img src="https://avatars.githubusercontent.com/ch5x" alt="Profile Picture">
-  <h1>chax</h1>
+  <div class="profile">
+    <img src="https://avatars.githubusercontent.com/YOURUSERNAME" alt="Profile Picture">
+    <h1>chax</h1>
+  </div>
 
-  <a href="https://github.com/ch5x" target="_blank">github</a>
-  <a href="https://instagram.com/chaxfr" target="_blank">instagram</a>
-  <a href="https://namemc.com/profile/chfx.3" target="_blank">namemc</a> 
+  <div class="links">
+    <a href="https://github.com/ch5x" target="_blank">github</a>
+    <a href="https://instagram.com/vhaxfr" target="_blank">instagram</a>
+    <a href="https://namemc.com/profile/chfx.3" target="_blank">namemc</a>
+  </div>
 </body>
 </html>
